@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class Fish : MonoBehaviour {
 
+	string _name = "";
+	float _health = 100;
+	float _hunger = 100;
+	float _temperature = 20;
+	float _oxygenPerc = 30;
+	float _requiredPurity = 25;
+
 	float deltaMove = 50;
 
 	float rightBound = 625;
