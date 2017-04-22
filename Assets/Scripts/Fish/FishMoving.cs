@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Fish : MonoBehaviour {
+public class FishMoving : MonoBehaviour {
 
 	float deltaMove = 50;
 
-	float rightBound = 625;
-	float leftBound = -625;
+	float rightBound = 0;
+	float leftBound = 0;
 
 	// Use this for initialization
 	void Start () {
