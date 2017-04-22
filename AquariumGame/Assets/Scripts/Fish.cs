@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Fish : MonoBehaviour {
 
-	float deltaMove = 1;
+	float deltaMove = 50;
 
-	float rightBound = 280;
-	float leftBound = -280;
+	float rightBound = 625;
+	float leftBound = -625;
 
 	// Use this for initialization
 	void Start () {
@@ -16,7 +16,7 @@ public class Fish : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		transform.localPosition = new Vector3 (transform.localPosition.x + deltaMove , transform.localPosition.y, transform.localPosition.z);
+		transform.localPosition = new Vector3 (transform.localPosition.x + deltaMove * Time.deltaTime , transform.localPosition.y, transform.localPosition.z);
 
 		if (transform.localPosition.x > rightBound) {
 			transform.localPosition = new Vector3 (rightBound , transform.localPosition.y, transform.localPosition.z);
