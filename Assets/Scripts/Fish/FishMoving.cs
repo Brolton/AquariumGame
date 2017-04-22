@@ -2,19 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Fish : MonoBehaviour {
-
-	string _name = "";
-	float _health = 100;
-	float _hunger = 100;
-	float _temperature = 20;
-	float _oxygenPerc = 30;
-	float _requiredPurity = 25;
+public class FishMoving : MonoBehaviour {
 
 	float deltaMove = 50;
 
-	float rightBound = 625;
-	float leftBound = -625;
+	float rightBound = 0;
+	float leftBound = 0;
 
 	// Use this for initialization
 	void Start () {

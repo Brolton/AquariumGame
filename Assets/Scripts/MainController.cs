@@ -79,10 +79,16 @@ public class MainController : MonoBehaviour {
 
 		newFish.transform.SetParent (_aquarium.transform);
 
+		// Random position
 		System.Random rnd = new System.Random();
 		int horizBound = (int)(_aquarium.GetComponent<RectTransform> ().rect.width / 2 - newFish.GetComponent<RectTransform> ().rect.width);
 		int vertBound = (int)(_aquarium.GetComponent<RectTransform> ().rect.height / 2 - newFish.GetComponent<RectTransform> ().rect.height);
 		newFish.transform.SetLocalPositionX (rnd.Next (-horizBound, horizBound));
 		newFish.transform.SetLocalPositionY (rnd.Next (-vertBound, vertBound));
+
+		newFish.Name = "Fish: " + _allFishes.Count; // Just for test
+		newFish.Temperature = rnd.Next(11, 31); // Just for test
+		newFish.OxygenPerc = rnd.Next(6, 41); // Just for test
+		newFish.RequiredPurity = rnd.Next(1, 36); // Just for test
 	}
 }
