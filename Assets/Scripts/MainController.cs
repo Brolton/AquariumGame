@@ -90,5 +90,7 @@ public class MainController : MonoBehaviour {
 		newFish.Temperature = rnd.Next(11, 31); // Just for test
 		newFish.OxygenPerc = rnd.Next(6, 41); // Just for test
 		newFish.RequiredPurity = rnd.Next(1, 36); // Just for test
+
+		newFish.Color = Constants.FishColorsList[rnd.Next(Constants.FishColorsList.Count)];
 	}
 }
