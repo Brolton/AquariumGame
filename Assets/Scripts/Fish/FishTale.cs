@@ -26,7 +26,7 @@ public class FishTale : MonoBehaviour {
 			float angleY = transform.localRotation.eulerAngles.y;
 
 			if (Mathf.Abs(angleY) > _maxAngle) {
-				angleY = _maxAngle;
+				angleY = _maxAngle * Mathf.Abs(angleY) / angleY;
 				_deltaRot *= -1;
 				transform.Rotate(0,_deltaRot * Time.deltaTime,0);
 			}
@@ -35,7 +35,7 @@ public class FishTale : MonoBehaviour {
 
 			float colorMultiply = (angleY + _maxAngle) / (2 * _maxAngle) * _tailColorCoef + (1.0f - _tailColorCoef);
 			Color newColor = new Color(_baseColor.r * colorMultiply, _baseColor.g * colorMultiply, _baseColor.b * colorMultiply);
-			gameObject.GetComponent<UnityEngine.UI.Image> ().color = newColor;
+//			gameObject.GetComponent<UnityEngine.UI.Image> ().color = newColor;
 		}
 	}
 }

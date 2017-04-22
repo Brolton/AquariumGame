@@ -11,7 +11,7 @@ public class FishMoving : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		rightBound = transform.parent.GetComponent<RectTransform> ().rect.width / 2 - this.GetComponent<RectTransform> ().rect.width;
+		rightBound = transform.parent.GetComponent<RectTransform> ().rect.width / 2 + this.GetComponent<RectTransform> ().rect.width / 4;
 		leftBound = -rightBound;
 	}
 	
