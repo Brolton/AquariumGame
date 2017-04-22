@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Fish : MonoBehaviour {
 
@@ -54,6 +55,27 @@ public class Fish : MonoBehaviour {
 	}
 
 	float deltaHealth = 2.5f;
+
+	[SerializeField]
+	Image _body;
+	[SerializeField]
+	Image _mouth;
+	[SerializeField]
+	Image _tail;
+
+	Color _color = new Color();
+	public Color Color
+	{
+		get {
+			return _color;
+		}
+		set {
+			_color = value;
+			_body.color = _color;
+			_mouth.color = _color;
+			_tail.color = _color;
+		}
+	}
 
 	// Use this for initialization
 	void Start () {
