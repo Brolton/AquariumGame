@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MainController : MonoBehaviour {
+public class MainController : SFMonoBehaviour<object> {
 
 	enum GameSpeedType {
 		GAME_SPEED_NORMAL,
@@ -65,8 +65,7 @@ public class MainController : MonoBehaviour {
 
 	void GenerateNewFishes ()
 	{
-		System.Random rnd = new System.Random();
-		int newFishesNumber = rnd.Next(1, _maxFishesAtOnce + 1);  // Just for test
+		int newFishesNumber = UnityEngine.Random.Range(1, _maxFishesAtOnce + 1);  // Just for test
 		for (int i = 0; i < newFishesNumber; i++) {
 			CreateNewFish ();
 		}
@@ -80,17 +79,28 @@ public class MainController : MonoBehaviour {
 		newFish.transform.SetParent (_aquarium.transform);
 
 		// Random position
-		System.Random rnd = new System.Random();
-		int horizBound = (int)(_aquarium.GetComponent<RectTransform> ().rect.width / 2 - newFish.GetComponent<RectTransform> ().rect.width);
+		int horizBound = (int)(_aquarium.GetComponent<RectTransform> ().rect.width / 2 + newFish.GetComponent<RectTransform> ().rect.width / 2);
 		int vertBound = (int)(_aquarium.GetComponent<RectTransform> ().rect.height / 2 - newFish.GetComponent<RectTransform> ().rect.height);
-		newFish.transform.SetLocalPositionX (rnd.Next (-horizBound, horizBound));
-		newFish.transform.SetLocalPositionY (rnd.Next (-vertBound, vertBound));
+
+		float posX = (UnityEngine.Random.value > 0.5f) ? horizBound : -horizBound;
+		float posY = UnityEngine.Random.Range(-vertBound, vertBound);
+
+		newFish.transform.SetLocalPositionX (posX);
+		newFish.transform.SetLocalPositionY (posY);
 
 		newFish.Name = "Fish: " + _allFishes.Count; // Just for test
-		newFish.Temperature = rnd.Next(11, 31); // Just for test
-		newFish.OxygenPerc = rnd.Next(6, 41); // Just for test
-		newFish.RequiredPurity = rnd.Next(1, 36); // Just for test
+		newFish.Temperature = UnityEngine.Random.Range(11, 31); // Just for test
+		newFish.OxygenPerc = UnityEngine.Random.Range(6, 41); // Just for test
+		newFish.RequiredPurity = UnityEngine.Random.Range(1, 36); // Just for test
 
-		newFish.Color = Constants.FishColorsList[rnd.Next(Constants.FishColorsList.Count)];
+		newFish.SetColor(Constants.FishColorsList[UnityEngine.Random.Range(0, Constants.FishColorsList.Count)]);
+
+		newFish.AddEventListener ((int)Fish.FishEvents.DEATH, OnFishDead);
+	}
+
+	void OnFishDead(object data) {
+		Fish deadFish = (Fish)data;
+		_allFishes.Remove (deadFish);
+		// Calculate scores?
 	}
 }

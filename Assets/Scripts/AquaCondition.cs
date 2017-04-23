@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AquaCondition : MonoBehaviour {
+public class AquaCondition : SFMonoBehaviour<object> {
 	public bool powerIsOn = true;
+	public bool overload = false;
 	public float currentPower;
 	public float fullPower = 250f;
 	public float waterTemperature = 10f;
-	public float pumpPower = 20f;
+	public float filterPower = 20f;
 	public float oxygenPower = 20f;
 	public float heatPower = 20f;
 	public float lightPower = 20f;
@@ -22,10 +23,10 @@ public class AquaCondition : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		currentPower = pumpPower + oxygenPower + heatPower + lightPower;
+		currentPower = filterPower + oxygenPower + heatPower + lightPower;
 
 		if (currentPower > fullPower) {
-			powerIsOn = false;
+			overload = true;
 		}
 	}
 }
