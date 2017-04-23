@@ -70,6 +70,7 @@ public class FishAI : SFMonoBehaviour<object>
 	void JustSwim ()
 	{
 		if ( Vector3.SqrMagnitude(transform.localPosition - _targetPos) > 0.0001 ) {
+			ChangeFishDirectionIfNeed (_targetPos);
 			transform.localPosition = Vector3.MoveTowards (transform.localPosition, _targetPos, Time.deltaTime * _fishSpeed);
 		} else {
 			GenetateNewTargetPosAndSpeed ();
@@ -170,7 +171,6 @@ public class FishAI : SFMonoBehaviour<object>
 
 	void OnFoodDestroy(object data) {
 		_targetFood = null;
-		GenetateNewTargetPosAndSpeed ();
 	}
 
 	void SwimToFood()
@@ -204,8 +204,6 @@ public class FishAI : SFMonoBehaviour<object>
 
 	void EatFood ()
 	{
-		_targetFood.RemoveEventListener((int)Food.Events.ON_DESTROY, OnFoodDestroy);
 		_targetFood.OnEated ();
-		GenetateNewTargetPosAndSpeed ();
 	}
 }
