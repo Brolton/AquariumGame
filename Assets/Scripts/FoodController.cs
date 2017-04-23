@@ -13,7 +13,7 @@ public class FoodController : SFMonoBehaviour<object> {
 
 	// Use this for initialization
 	void Start () {
-		GenerateFoods ();
+
 	}
 	
 	// Update is called once per frame
