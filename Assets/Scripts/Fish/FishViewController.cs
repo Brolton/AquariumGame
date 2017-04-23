@@ -60,7 +60,7 @@ public class FishViewController : SFMonoBehaviour<object>
 
 	void Update() {
 		if (_fadeOut) {
-			float newAlpha = Color.a - 0.01f; // Just for test
+			float newAlpha = Color.a - 0.005f; // Just for test
 			if (newAlpha < 0) {
 				newAlpha = 0;
 			}

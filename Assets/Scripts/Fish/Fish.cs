@@ -92,7 +92,7 @@ public class Fish : SFMonoBehaviour<object> {
 	void Update () {
 		DecreaseHunger ();
 		CalculateHealth ();
-//		CheckFishAge ();
+		CheckFishAge ();
 	}
 
 	void DecreaseHunger() {

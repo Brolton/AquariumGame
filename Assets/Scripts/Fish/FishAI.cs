@@ -28,7 +28,8 @@ public class FishAI : SFMonoBehaviour<object>
 	[SerializeField]
 	Food _targetFood;
 
-	float _maxFishAngle = 45;
+	float _minFishAngle = 15; // to down
+	float _maxFishAngle = -45; // to top
 
 	float _maxDistanceToFood = 300;
 
@@ -122,11 +123,11 @@ public class FishAI : SFMonoBehaviour<object>
 		vectorToTarget.Normalize ();
 
 		float rot_z = -Mathf.Atan2(vectorToTarget.y, Mathf.Abs(vectorToTarget.x)) * Mathf.Rad2Deg;
-		if (rot_z < -_maxFishAngle) {
-			rot_z = -_maxFishAngle;
-		}
-		if (rot_z >_maxFishAngle) {
+		if (rot_z < _maxFishAngle) {
 			rot_z = _maxFishAngle;
+		}
+		if (rot_z >_minFishAngle) {
+			rot_z = _minFishAngle;
 		}
 
 		transform.rotation = Quaternion.Euler(transform.eulerAngles.x, transform.eulerAngles.y, rot_z);
