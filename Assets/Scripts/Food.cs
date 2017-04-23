@@ -10,6 +10,8 @@ public class Food : SFMonoBehaviour<object> {
 
 	float deltaMove = 35;
 
+	public Fish hunterFish = null;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -23,5 +25,10 @@ public class Food : SFMonoBehaviour<object> {
 			CallEvent ((int)Events.ON_DESTROY, this);
 			Destroy (this.gameObject);
 		}
+	}
+
+	public void OnEated() {
+		CallEvent ((int)Events.ON_DESTROY, this);
+		Destroy (this.gameObject);
 	}
 }
