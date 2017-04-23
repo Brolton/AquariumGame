@@ -19,7 +19,13 @@ public class FishAI : SFMonoBehaviour<object>
 
 	int _fishSpeed = 50; // for tests
 
+	const int _fastSpeed = 100; // go to food
+
 	Vector3 _targetPos;
+
+	Food _targetFood;
+
+	float _maxFishAngle = 45;
 
 	// Use this for initialization
 	void Start () {
@@ -32,7 +38,11 @@ public class FishAI : SFMonoBehaviour<object>
 	// Update is called once per frame
 	void Update () {
 		if (_aiIsActive) {
-			MoveAi ();
+			if (_targetFood != null || IsHungryAndFoodNearby ()) {
+				SwimToFood ();
+			} else {
+				JustSwim ();
+			}
 		}
 		if (_isDead) {
 			MoveTop ();
@@ -47,12 +57,12 @@ public class FishAI : SFMonoBehaviour<object>
 	public void PlayDeathAnimation() {
 		_aiIsActive = false;
 		_isDead = true;
-		transform.Rotate(0,0,180);
+		transform.rotation = Quaternion.Euler(transform.rotation.x, transform.rotation.y, 180);
 		_tail.StopMoving();
 		_mouth.StopMoving();
 	}
 
-	void MoveAi ()
+	void JustSwim ()
 	{
 		if ( Vector3.SqrMagnitude(transform.localPosition - _targetPos) > 0.0001 ) {
 			transform.localPosition = Vector3.MoveTowards (transform.localPosition, _targetPos, Time.deltaTime * _fishSpeed);
@@ -77,7 +87,7 @@ public class FishAI : SFMonoBehaviour<object>
 
 	void GenetateNewTargetPosAndSpeed() {
 		_targetPos = new Vector3 (UnityEngine.Random.Range(-(int)rightBound, (int)rightBound), UnityEngine.Random.Range(-(int)topBound, (int)topBound));
-		ChangeFishDirectionIfNeed ();
+		ChangeFishDirectionIfNeed (_targetPos);
 
 		Vector3 heading = _targetPos - transform.localPosition;
 		float distance = heading.magnitude;
@@ -85,21 +95,30 @@ public class FishAI : SFMonoBehaviour<object>
 		_fishSpeed = UnityEngine.Random.Range (_fishSpeed / 2, _fishSpeed + 1);
 	}
 
-	void ChangeFishDirectionIfNeed() {
+	void ChangeFishDirectionIfNeed(Vector3 neededPos) {
 		// check need direction
-		if (_targetPos.x - transform.localPosition.x < 0 &&
+		if (neededPos.x - transform.localPosition.x < 0 &&
 			transform.rotation.eulerAngles.y != 0) {
-			transform.rotation = Quaternion.Euler(transform.rotation.x, 0, transform.rotation.x);
+			transform.rotation = Quaternion.Euler(transform.eulerAngles.x, 0, transform.eulerAngles.z);
 		}
-		if (_targetPos.x - transform.localPosition.x > 0 &&
+		if (neededPos.x - transform.localPosition.x > 0 &&
 			transform.rotation.eulerAngles.y != 180) {
-			transform.rotation = Quaternion.Euler(transform.rotation.x, 180, transform.rotation.x);
+			transform.rotation = Quaternion.Euler(transform.eulerAngles.x, 180, transform.eulerAngles.z);
 		}
 			
-//		var vectorToTarget = _targetPos - transform.localPosition;
-//		vectorToTarget.Normalize ();
-//
-//		float rot_z = Mathf.Atan2(vectorToTarget.y, Mathf.Abs(vectorToTarget.x)) * Mathf.Rad2Deg;
+		var vectorToTarget = neededPos - transform.localPosition;
+		vectorToTarget.Normalize ();
+
+		float rot_z = -Mathf.Atan2(vectorToTarget.y, Mathf.Abs(vectorToTarget.x)) * Mathf.Rad2Deg;
+		if (rot_z < -_maxFishAngle) {
+			rot_z = -_maxFishAngle;
+		}
+		if (rot_z >_maxFishAngle) {
+			rot_z = _maxFishAngle;
+		}
+
+		transform.rotation = Quaternion.Euler(transform.eulerAngles.x, transform.eulerAngles.y, rot_z);
+
 //		transform.rotation = Quaternion.Euler(transform.rotation.x, transform.rotation.y, rot_z - 90);
 
 //		var heading = _targetPos - transform.localPosition;
@@ -109,5 +128,38 @@ public class FishAI : SFMonoBehaviour<object>
 //
 //		var q = Quaternion.LookRotation(heading);
 //		transform.rotation = Quaternion.RotateTowards(transform.rotation, q, 100 * Time.deltaTime);
+	}
+
+	bool IsHungryAndFoodNearby() {
+		if (FoodController.AllFoods.Count == 0) {
+			return false;
+		}
+
+		int minDistance = int.MaxValue;
+
+		foreach (Food someFood in FoodController.AllFoods) {
+			var heading = someFood.transform.localPosition - transform.localPosition;
+			var distance = heading.magnitude;
+			if (distance < minDistance) {
+				minDistance = (int)distance;
+				_targetFood = someFood;
+			}
+		}
+
+		_targetFood.AddEventListener ((int)Food.Events.ON_DESTROY, OnFoodDestroy);
+
+		return (_targetFood != null);
+	}
+
+	void OnFoodDestroy(object data) {
+		_targetFood = null;
+	}
+
+	void SwimToFood()
+	{
+		if ( Vector3.SqrMagnitude(transform.localPosition - _targetFood.transform.localPosition) > 0.0001 ) {
+			transform.localPosition = Vector3.MoveTowards (transform.localPosition, _targetFood.transform.localPosition, Time.deltaTime * _fastSpeed);
+			ChangeFishDirectionIfNeed (_targetFood.transform.localPosition);
+		}
 	}
 }

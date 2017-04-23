@@ -36,7 +36,11 @@ public class FishViewController : SFMonoBehaviour<object>
 
 	bool _fadeOut = false;
 
+	Vector2 _baseSize;
+
 	void Start() {
+		_baseSize = GetComponent<RectTransform> ().rect.size;
+
 		_eyeNormal.gameObject.SetActive (true);
 		_eyeCross.gameObject.SetActive (false);
 	}
@@ -66,6 +70,15 @@ public class FishViewController : SFMonoBehaviour<object>
 				_fadeOut = false;
 				CallEvent((int)Events.FISH_INVISIBLE, null);
 			}
+		}
+	}
+
+	public void Grow(Fish.FishSizes newFishSize) {
+		if (newFishSize == Fish.FishSizes.CHILD) {
+			GetComponent<RectTransform> ().sizeDelta = new Vector2 (_baseSize.x * 2, _baseSize.y * 2);
+		}
+		if (newFishSize == Fish.FishSizes.ADULT) {
+			GetComponent<RectTransform> ().sizeDelta = new Vector2 (_baseSize.x * 3, _baseSize.y * 3);
 		}
 	}
 }

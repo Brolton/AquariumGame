@@ -32,7 +32,8 @@ public class MainController : SFMonoBehaviour<object> {
 	// Use this for initialization
 	void Start () {
 		startTime = Time.time;
-		GenerateNewFishes ();
+//		GenerateNewFishes ();
+		CreateNewFish();
 	}
 	
 	// Update is called once per frame
@@ -95,7 +96,13 @@ public class MainController : SFMonoBehaviour<object> {
 
 		newFish.SetColor(Constants.FishColorsList[UnityEngine.Random.Range(0, Constants.FishColorsList.Count)]);
 
+		newFish.AddEventListener ((int)Fish.FishEvents.BORN_NEW_FISH, OnBornNewFish);
 		newFish.AddEventListener ((int)Fish.FishEvents.DEATH, OnFishDead);
+	}
+
+	void OnBornNewFish(object data) {
+		Vector3 newFishPos = (Vector3)data;
+//		CreateNewFish (newFishPos);
 	}
 
 	void OnFishDead(object data) {

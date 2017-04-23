@@ -6,8 +6,20 @@ using UnityEngine.UI;
 public class Fish : SFMonoBehaviour<object> {
 
 	public enum FishEvents {
-		DEATH
+		DEATH,
+		BORN_NEW_FISH
 	}
+
+	public enum FishSizes {
+		NEWBORN,
+		CHILD,
+		ADULT
+	}
+
+	public FishSizes _currentSize = FishSizes.NEWBORN;
+	int _currentDay = 0;
+
+	float _startLifeTime = 0;
 
 	[SerializeField]
 	double _health = 100;
@@ -80,6 +92,7 @@ public class Fish : SFMonoBehaviour<object> {
 	void Update () {
 		DecreaseHunger ();
 		CalculateHealth ();
+//		CheckFishAge ();
 	}
 
 	void DecreaseHunger() {
@@ -141,5 +154,26 @@ public class Fish : SFMonoBehaviour<object> {
 
 	void OnFishInvisble(object data) {
 		Destroy (this.gameObject);
+	}
+
+	void  CheckFishAge ()
+	{
+		float gameTime = Time.time - _startLifeTime;
+
+		if (_currentDay < (int)(gameTime / 10)) // Just for test
+		{
+			_currentDay = (int)(gameTime / 10);
+			if (_currentSize != FishSizes.ADULT) {
+				_currentSize = (FishSizes)((int)_currentSize + 1);
+				_viewController.Grow (_currentSize);
+			} else {
+				BornNewFish ();
+			}
+		}
+	}
+
+	void BornNewFish ()
+	{
+		CallEvent ((int)FishEvents.BORN_NEW_FISH, transform.localPosition);
 	}
 }
