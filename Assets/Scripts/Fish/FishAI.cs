@@ -151,7 +151,8 @@ public class FishAI : SFMonoBehaviour<object>
 		int minDistance = int.MaxValue;
 
 		foreach (Food someFood in FoodController.AllFoods) {
-			if (someFood.hunterFish != null) {
+			if (someFood.hunterFish != null ||
+				someFood.transform.localPosition.y < -topBound) {
 				continue;
 			}
 			var heading = someFood.transform.localPosition - transform.localPosition;
@@ -195,8 +196,15 @@ public class FishAI : SFMonoBehaviour<object>
 			fixedPosY = _targetFood.transform.localPosition.y + width * Mathf.Sin (transform.rotation.z) / 2;
 		}
 
+		if (fixedPosY < -topBound) {
+			_targetFood.RemoveEventListener((int)Food.Events.ON_DESTROY, OnFoodDestroy);
+			_targetFood.hunterFish = null;
+			_targetFood = null;
+			return;
+		}
+
 		Vector3 fixedPosition = new Vector3 (fixedPosX, fixedPosY);
-		if (Vector3.SqrMagnitude (transform.localPosition - fixedPosition) > 0.5f) {
+		if (Vector3.SqrMagnitude (transform.localPosition - fixedPosition) > 1.0f) {
 			transform.localPosition = Vector3.MoveTowards (transform.localPosition, fixedPosition, Time.deltaTime * _fastSpeed);
 		} else {
 			EatFood ();

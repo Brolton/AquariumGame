@@ -21,7 +21,7 @@ public class Food : SFMonoBehaviour<object> {
 	void Update () {
 		transform.localPosition = new Vector3 (transform.localPosition.x, transform.localPosition.y - deltaMove * Time.deltaTime, transform.localPosition.z);
 
-		if (transform.localPosition.y < -transform.parent.GetComponent<RectTransform> ().rect.height / 2) {
+		if (transform.localPosition.y < -(transform.parent.GetComponent<RectTransform> ().rect.height / 2 - GetComponent<RectTransform> ().rect.height / 2)) {
 			CallEvent ((int)Events.ON_DESTROY, this);
 			Destroy (this.gameObject);
 		}
