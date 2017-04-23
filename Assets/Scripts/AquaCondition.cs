@@ -11,7 +11,8 @@ public class AquaCondition : MonoBehaviour {
 	public float oxygenPower = 20f;
 	public float heatPower = 20f;
 	public float lightPower = 20f;
-
+	public float currentPollution = 0f;
+	public float currentOxygenConsuming;
 
 
 	// Use this for initialization
