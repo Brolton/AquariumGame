@@ -58,7 +58,7 @@ public class Fish : SFMonoBehaviour<object> {
 		}
 	}
 
-	float deltaHealth = 2,5f;
+	float deltaHealth = 2.5f;
 
 	[SerializeField]
 	FishAI _ai;
