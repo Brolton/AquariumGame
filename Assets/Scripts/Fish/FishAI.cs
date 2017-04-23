@@ -17,20 +17,15 @@ public class FishAI : SFMonoBehaviour<object>
 	[SerializeField]
 	FishTail _tail;
 
-	[SerializeField]
 	int _fishSpeed = 50; // for tests
 
 	const int _fastSpeed = 100; // go to food
 
-	[SerializeField]
 	Vector3 _targetPos;
 
-	[SerializeField]
 	Food _targetFood;
 
 	float _maxFishAngle = 45;
-
-	float _maxDistanceToFood = 300;
 
 	// Use this for initialization
 	void Start () {
@@ -97,7 +92,7 @@ public class FishAI : SFMonoBehaviour<object>
 		Vector3 heading = _targetPos - transform.localPosition;
 		float distance = heading.magnitude;
 
-		_fishSpeed = UnityEngine.Random.Range (_fastSpeed/4, _fastSpeed/2 + 1);
+		_fishSpeed = UnityEngine.Random.Range (_fishSpeed / 2, _fishSpeed + 1);
 	}
 
 	void ChangeFishDirectionIfNeed(Vector3 neededPos) {
@@ -154,17 +149,15 @@ public class FishAI : SFMonoBehaviour<object>
 			}
 			var heading = someFood.transform.localPosition - transform.localPosition;
 			var distance = heading.magnitude;
-			if (distance < _maxDistanceToFood &&
-				distance < minDistance) {
+			if (distance < minDistance) {
 				minDistance = (int)distance;
 				_targetFood = someFood;
 			}
 		}
 
-		if (_targetFood != null) {
-			_targetFood.hunterFish = this.GetComponent<Fish> ();
-			_targetFood.AddEventListener ((int)Food.Events.ON_DESTROY, OnFoodDestroy);
-		}
+		_targetFood.hunterFish = this.GetComponent<Fish>();
+		_targetFood.AddEventListener ((int)Food.Events.ON_DESTROY, OnFoodDestroy);
+
 		return (_targetFood != null);
 	}
 
@@ -206,6 +199,5 @@ public class FishAI : SFMonoBehaviour<object>
 	{
 		_targetFood.RemoveEventListener((int)Food.Events.ON_DESTROY, OnFoodDestroy);
 		_targetFood.OnEated ();
-		GenetateNewTargetPosAndSpeed ();
 	}
 }
