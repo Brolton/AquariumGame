@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class FishTale : MonoBehaviour {
+public class FishTail : SFMonoBehaviour<object> {
 
 	bool _moving = true;
 
@@ -37,5 +37,10 @@ public class FishTale : MonoBehaviour {
 			Color newColor = new Color(_baseColor.r * colorMultiply, _baseColor.g * colorMultiply, _baseColor.b * colorMultiply);
 //			gameObject.GetComponent<UnityEngine.UI.Image> ().color = newColor;
 		}
+	}
+
+	public void StopMoving() {
+		_moving = false;
+		transform.Rotate(0,0, 0);
 	}
 }

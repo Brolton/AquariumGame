@@ -1,22 +1,40 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FishMoving : MonoBehaviour {
+public class FishAI : SFMonoBehaviour<object>
+{
+	bool _aiIsActive = true;
+	bool _isDead = false;
 
 	float deltaMove = 50;
-
 	float rightBound = 0;
 	float leftBound = 0;
+
+	[SerializeField]
+	FishMouth _mouth;
+	[SerializeField]
+	FishTail _tail;
 
 	// Use this for initialization
 	void Start () {
 		rightBound = transform.parent.GetComponent<RectTransform> ().rect.width / 2 + this.GetComponent<RectTransform> ().rect.width / 4;
 		leftBound = -rightBound;
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
+		if (_aiIsActive) {
+			MoveForward ();
+		}
+		if (_isDead) {
+			MoveTop ();
+		}
+	}
+
+	void MoveForward ()
+	{
 		transform.localPosition = new Vector3 (transform.localPosition.x + deltaMove * Time.deltaTime , transform.localPosition.y, transform.localPosition.z);
 
 		if (transform.localPosition.x > rightBound) {
@@ -30,5 +48,19 @@ public class FishMoving : MonoBehaviour {
 			transform.Rotate(0,180,0);
 			deltaMove *= -1;
 		}
+	}
+
+	void MoveTop ()
+	{
+		transform.localPosition = new Vector3 (transform.localPosition.x, transform.localPosition.y + deltaMove * Time.deltaTime, transform.localPosition.z);
+	}
+
+	public void PlayDeathAnimation() {
+		_aiIsActive = false;
+		_isDead = true;
+		transform.Rotate(0,0,180);
+		_tail.StopMoving();
+		_mouth.StopMoving();
+//		_mouth.OpenMouth ();
 	}
 }

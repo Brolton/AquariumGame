@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MainController : MonoBehaviour {
+public class MainController : SFMonoBehaviour<object> {
 
 	enum GameSpeedType {
 		GAME_SPEED_NORMAL,
@@ -81,16 +81,24 @@ public class MainController : MonoBehaviour {
 
 		// Random position
 		System.Random rnd = new System.Random();
-		int horizBound = (int)(_aquarium.GetComponent<RectTransform> ().rect.width / 2 - newFish.GetComponent<RectTransform> ().rect.width);
+		int horizBound = (int)(_aquarium.GetComponent<RectTransform> ().rect.width / 2 + newFish.GetComponent<RectTransform> ().rect.width / 2);
 		int vertBound = (int)(_aquarium.GetComponent<RectTransform> ().rect.height / 2 - newFish.GetComponent<RectTransform> ().rect.height);
-		newFish.transform.SetLocalPositionX (rnd.Next (-horizBound, horizBound));
-		newFish.transform.SetLocalPositionY (rnd.Next (-vertBound, vertBound));
+		newFish.transform.SetLocalPositionX (-horizBound);
+		newFish.transform.SetLocalPositionY (-vertBound);
 
 		newFish.Name = "Fish: " + _allFishes.Count; // Just for test
 		newFish.Temperature = rnd.Next(11, 31); // Just for test
 		newFish.OxygenPerc = rnd.Next(6, 41); // Just for test
 		newFish.RequiredPurity = rnd.Next(1, 36); // Just for test
 
-		newFish.Color = Constants.FishColorsList[rnd.Next(Constants.FishColorsList.Count)];
+		newFish.SetColor(Constants.FishColorsList[rnd.Next(Constants.FishColorsList.Count)]);
+
+		newFish.AddEventListener ((int)Fish.FishEvents.DEATH, OnFishDead);
+	}
+
+	void OnFishDead(object data) {
+		Fish deadFish = (Fish)data;
+		_allFishes.Remove (deadFish);
+		// Calculate scores?
 	}
 }

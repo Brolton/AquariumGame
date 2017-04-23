@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AquaCondition : MonoBehaviour {
+public class AquaCondition : SFMonoBehaviour<object> {
 	public bool powerIsOn = true;
 	public float currentPower;
 	public float fullPower = 250f;

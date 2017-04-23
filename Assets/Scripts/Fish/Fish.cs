@@ -3,7 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Fish : MonoBehaviour {
+public class Fish : SFMonoBehaviour<object> {
+
+	public enum FishEvents {
+		DEATH
+	}
 
 	[SerializeField]
 	double _health = 100;
@@ -54,27 +58,17 @@ public class Fish : MonoBehaviour {
 		}
 	}
 
-	float deltaHealth = 2.5f;
+	float deltaHealth = 2,5f;
 
 	[SerializeField]
-	Image _body;
-	[SerializeField]
-	Image _mouth;
-	[SerializeField]
-	Image _tail;
+	FishAI _ai;
 
-	Color _color = new Color();
-	public Color Color
+	[SerializeField]
+	FishViewController _viewController;
+
+	public void SetColor (Color newColor)
 	{
-		get {
-			return _color;
-		}
-		set {
-			_color = value;
-			_body.color = _color;
-			_mouth.color = _color;
-			_tail.color = _color;
-		}
+		_viewController.Color = newColor;
 	}
 
 	// Use this for initialization
@@ -115,6 +109,10 @@ public class Fish : MonoBehaviour {
 	}
 
 	void CalculateHealth() {
+		if (_health <= 0) {
+			return;
+		}
+
 		if (IsHungry()) {
 			_health -= deltaHealth * Time.deltaTime;
 		}
@@ -130,10 +128,18 @@ public class Fish : MonoBehaviour {
 
 		if (_health < 0) {
 			_health = 0;
-			Destroy (this.gameObject);
+			KillSelf ();
 		}
+	}
 
+	void KillSelf() {
+		CallEvent((int)FishEvents.DEATH, this);// Remove from _allFishes in MainController
+		_ai.PlayDeathAnimation ();
+		_viewController.PlayDeathAnimation ();
+		_viewController.AddEventListener ((int)FishViewController.Events.FISH_INVISIBLE, OnFishInvisble);
+	}
 
-		// Remove from _allFishes
+	void OnFishInvisble(object data) {
+		Destroy (this.gameObject);
 	}
 }
