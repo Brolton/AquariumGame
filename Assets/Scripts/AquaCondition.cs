@@ -27,6 +27,8 @@ public class AquaCondition : SFMonoBehaviour<object> {
 
 		if (currentPower > fullPower) {
 			overload = true;
+		} else {
+			overload = false;
 		}
 	}
 }
