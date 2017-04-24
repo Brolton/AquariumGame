@@ -7,6 +7,8 @@ using UnityEngine.UI;
 public class PowerSwitch : MonoBehaviour {
 	public GameObject mainController;
 	public bool power = true;
+	public Sprite imageOn;
+	public Sprite imageOff;
 	// Use this for initialization
 	void Start () {
 		
@@ -21,9 +23,9 @@ public class PowerSwitch : MonoBehaviour {
 			mainController.GetComponent<AquaCondition> ().powerIsOn = power;
 		}
 		if (power) {
-			gameObject.GetComponent<Image> ().color = new Color (0, 0, 255);
+			gameObject.GetComponent<Image> ().sprite = imageOn;
 		} else {
-			gameObject.GetComponent<Image> ().color = new Color (255, 0, 0);
+			gameObject.GetComponent<Image> ().sprite = imageOff;
 		}
 	}
 	public void OnOff(bool switching){
