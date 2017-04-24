@@ -154,18 +154,18 @@ public class Fish : SFMonoBehaviour<object> {
 			return;
 		}
 
-		float lightDiscomfort = Mathf.Abs (LightRequired - AquaCondition.lightPower);
+		float lightDiscomfort = Mathf.Abs (LightRequired - AquaCondition.Instance.LightPower);
 
-		float tempDiscomfort = Mathf.Abs (TempRequired - AquaCondition.heatPower);
+		float tempDiscomfort = Mathf.Abs (TempRequired - AquaCondition.Instance.heatPower);
 
 		float discomfort = Mathf.Max(((lightDiscomfort + tempDiscomfort)  - Constants.DiscomfortIgnoreLevel) * Constants.DiscomfortMul, 0);
 
 		float pollution = Mathf.Max (
-			((MainController.FishPollutionTotal - AquaCondition.filterPower * Constants.AQUA_MAX_POLLUTION / (Constants.POLL_POWER_STEPS_NUMBER - 1)) * Constants.PollutionMul), 
+			((MainController.FishPollutionTotal - AquaCondition.Instance.filterPower * Constants.AQUA_MAX_POLLUTION / (Constants.POLL_POWER_STEPS_NUMBER - 1)) * Constants.PollutionMul), 
 			0);
 
 		float airDeficit = Mathf.Max (
-			(MainController.FishAirConsumeTotal - AquaCondition.oxygenPower * Constants.AQUA_MAX_OXYGEN / (Constants.AIR_POWER_STEPS_NUMBER - 1)) * Constants.AirDeficitMul, 
+			(MainController.FishAirConsumeTotal - AquaCondition.Instance.oxygenPower * Constants.AQUA_MAX_OXYGEN / (Constants.AIR_POWER_STEPS_NUMBER - 1)) * Constants.AirDeficitMul, 
 			0);
 
 		float fishHealthLoss = discomfort + pollution + airDeficit;

@@ -57,7 +57,7 @@ public class OxygenController : MonoBehaviour {
 					break;
 				}
 			}
-			AquaCondition.oxygenPower = oxygenPower;
+			AquaCondition.Instance.oxygenPower = oxygenPower;
 		}
 	}
 	void LateUpdate(){

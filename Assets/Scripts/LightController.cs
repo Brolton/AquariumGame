@@ -57,7 +57,7 @@ public class LightController : MonoBehaviour {
 					break;
 				}
 			}
-			AquaCondition.lightPower = lightPower;
+			AquaCondition.Instance.LightPower = lightPower;
 		}
 	}
 	void LateUpdate(){
