@@ -14,7 +14,7 @@ public class VoltageArrow : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (mainController != null) {
-			currentPower = mainController.GetComponent<AquaCondition> ().currentPower;
+			currentPower = AquaCondition.currentPower;
 			zAngle = -currentPower/3.25f;
 			gameObject.GetComponent<RectTransform>().localRotation = Quaternion.Euler (new Vector3(0,0,zAngle));
 		}

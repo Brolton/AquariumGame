@@ -17,10 +17,10 @@ public class PowerSwitch : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (mainController != null) {
-			if (mainController.GetComponent<AquaCondition> ().overload) {
+			if (AquaCondition.overload) {
 				power = false;
 			}
-			mainController.GetComponent<AquaCondition> ().powerIsOn = power;
+			AquaCondition.powerIsOn = power;
 		}
 		if (power) {
 			gameObject.GetComponent<Image> ().sprite = imageOn;

@@ -23,11 +23,37 @@ public class MainController : SFMonoBehaviour<object> {
 
 	[SerializeField]
 	GameObject _fishPrefab;
-	List<Fish> _allFishes = new List<Fish> ();
+	static List<Fish> _allFishes = new List<Fish> ();
 	int _maxFishesAtOnce = 5;
+	int _lastFishId = -1;
 
 	[SerializeField]
 	GameObject _aquarium;
+
+	public static float FishPollutionTotal 
+	{
+		get {
+			float totalPolution = 0;
+			foreach(Fish someFish in _allFishes) {
+				if (someFish.CurrentSize == Fish.FishSizes.NEWBORN) {
+					totalPolution += Constants.FISH_POL_NEWBORN;
+				} else if (someFish.CurrentSize == Fish.FishSizes.CHILD) {
+					totalPolution += Constants.FISH_POL_CHILD;
+				} else  {
+					totalPolution += Constants.FISH_POL_ADULT;
+				}
+			}
+			totalPolution = (totalPolution > Constants.AQUA_MAX_POLLUTION) ? Constants.AQUA_MAX_POLLUTION : totalPolution;
+			return totalPolution;
+		}
+	}
+
+	public static float FishAirConsumeTotal
+	{
+		get {
+			return FishPollutionTotal;
+		}
+	}
 
 	// Use this for initialization
 	void Start () {
@@ -57,16 +83,16 @@ public class MainController : SFMonoBehaviour<object> {
 	{
 		float gameTime = Time.time - startTime;
 
-		if (currentDay < (int)(gameTime / 10)) // Just for test
+		if (currentDay < (int)(gameTime / 15)) // Just for test
 		{
-			currentDay = (int)(gameTime / 10);
+			currentDay = (int)(gameTime / 15);
 			GenerateNewFishes ();
 		}
 	}
 
 	void GenerateNewFishes ()
 	{
-		int newFishesNumber = UnityEngine.Random.Range(1, _maxFishesAtOnce + 1);  // Just for test
+		int newFishesNumber = 1; //UnityEngine.Random.Range(1, _maxFishesAtOnce + 1);  // Just for test
 		for (int i = 0; i < newFishesNumber; i++) {
 			CreateNewFish ();
 		}
@@ -89,10 +115,13 @@ public class MainController : SFMonoBehaviour<object> {
 		newFish.transform.SetLocalPositionX (posX);
 		newFish.transform.SetLocalPositionY (posY);
 
-		newFish.Name = "Fish: " + _allFishes.Count; // Just for test
-		newFish.Temperature = UnityEngine.Random.Range(11, 31); // Just for test
-		newFish.OxygenPerc = UnityEngine.Random.Range(6, 41); // Just for test
-		newFish.RequiredPurity = UnityEngine.Random.Range(1, 36); // Just for test
+		_lastFishId++;
+
+		newFish.Name = "Fish: " + _lastFishId.ToString();
+		newFish.LightRequired = UnityEngine.Random.Range(0, Constants.LIGHT_POWER_STEPS_NUMBER);
+		newFish.TempRequired = UnityEngine.Random.Range(0, Constants.TEMP_POWER_STEPS_NUMBER);
+//		newFish.OxygenPerc = UnityEngine.Random.Range(6, 41); // Just for test
+//		newFish.RequiredPurity = UnityEngine.Random.Range(1, 36); // Just for test
 
 		newFish.SetColor(Constants.FishColorsList[UnityEngine.Random.Range(0, Constants.FishColorsList.Count)]);
 

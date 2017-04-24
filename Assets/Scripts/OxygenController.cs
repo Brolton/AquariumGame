@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class OxygenController : MonoBehaviour {
 	public GameObject mainController;
-	public float oxygenPower;
+	public int oxygenPower;
 	public int counter = 1;
 	// Use this for initialization
 	void Start () {
@@ -14,8 +14,8 @@ public class OxygenController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (mainController != null) {
-			if (mainController.GetComponent<AquaCondition> ().powerIsOn == false) {
-				oxygenPower = 0f;
+			if (AquaCondition.powerIsOn == false) {
+				oxygenPower = 0;
 				switch (counter) {
 				case 5:
 					gameObject.GetComponent<RectTransform> ().localRotation = Quaternion.Euler (new Vector3 (0, 0, -65));
@@ -36,28 +36,28 @@ public class OxygenController : MonoBehaviour {
 			} else {
 				switch (counter) {
 				case 5:
-					oxygenPower = 100f;
+					oxygenPower = 5;
 					gameObject.GetComponent<RectTransform> ().localRotation = Quaternion.Euler (new Vector3 (0, 0, -65));
 					break;
 				case 4:
-					oxygenPower = 80f;
+					oxygenPower = 4;
 					gameObject.GetComponent<RectTransform> ().localRotation = Quaternion.Euler (new Vector3 (0, 0, -35));
 					break;
 				case 3:
-					oxygenPower = 60f;
+					oxygenPower = 3;
 					gameObject.GetComponent<RectTransform> ().localRotation = Quaternion.Euler (new Vector3 (0, 0, 0));
 					break;
 				case 2:
-					oxygenPower = 40f;
+					oxygenPower = 2;
 					gameObject.GetComponent<RectTransform> ().localRotation = Quaternion.Euler (new Vector3 (0, 0, 35));
 					break;
 				default:
-					oxygenPower = 20f;
+					oxygenPower = 1;
 					gameObject.GetComponent<RectTransform> ().localRotation = Quaternion.Euler (new Vector3 (0, 0, 65));
 					break;
 				}
 			}
-			mainController.GetComponent<AquaCondition> ().oxygenPower = oxygenPower;
+			AquaCondition.oxygenPower = oxygenPower;
 		}
 	}
 	void LateUpdate(){

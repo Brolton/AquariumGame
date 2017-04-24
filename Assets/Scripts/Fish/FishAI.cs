@@ -204,7 +204,7 @@ public class FishAI : SFMonoBehaviour<object>
 		}
 
 		Vector3 fixedPosition = new Vector3 (fixedPosX, fixedPosY);
-		if (Vector3.SqrMagnitude (transform.localPosition - fixedPosition) > 1.0f) {
+		if (Vector3.SqrMagnitude (transform.localPosition - fixedPosition) > 2.0f) {
 			transform.localPosition = Vector3.MoveTowards (transform.localPosition, fixedPosition, Time.deltaTime * _fastSpeed);
 		} else {
 			EatFood ();

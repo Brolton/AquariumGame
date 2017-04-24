@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FilterController : MonoBehaviour {
 	public GameObject mainController;
-	public float filterPower;
+	public int filterPower;
 	public int counter = 1;
 	// Use this for initialization
 	void Start () {
@@ -14,8 +14,8 @@ public class FilterController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (mainController != null) {
-			if (mainController.GetComponent<AquaCondition> ().powerIsOn == false) {
-				filterPower = 0f;
+			if (AquaCondition.powerIsOn == false) {
+				filterPower = 0;
 				switch (counter) {
 				case 5:
 					gameObject.GetComponent<RectTransform> ().localRotation = Quaternion.Euler (new Vector3 (0, 0, -65));
@@ -36,28 +36,28 @@ public class FilterController : MonoBehaviour {
 			} else {
 				switch (counter) {
 				case 5:
-					filterPower = 100f;
+					filterPower = 5;
 					gameObject.GetComponent<RectTransform> ().localRotation = Quaternion.Euler (new Vector3 (0, 0, -65));
 					break;
 				case 4:
-					filterPower = 80f;
+					filterPower = 4;
 					gameObject.GetComponent<RectTransform> ().localRotation = Quaternion.Euler (new Vector3 (0, 0, -35));
 					break;
 				case 3:
-					filterPower = 60f;
+					filterPower = 3;
 					gameObject.GetComponent<RectTransform> ().localRotation = Quaternion.Euler (new Vector3 (0, 0, 0));
 					break;
 				case 2:
-					filterPower = 40f;
+					filterPower = 2;
 					gameObject.GetComponent<RectTransform> ().localRotation = Quaternion.Euler (new Vector3 (0, 0, 35));
 					break;
 				default:
-					filterPower = 20f;
+					filterPower = 1;
 					gameObject.GetComponent<RectTransform> ().localRotation = Quaternion.Euler (new Vector3 (0, 0, 65));
 					break;
 				}
 			}
-			mainController.GetComponent<AquaCondition> ().filterPower = filterPower;
+			AquaCondition.filterPower = filterPower;
 		}
 	}
 	void LateUpdate(){

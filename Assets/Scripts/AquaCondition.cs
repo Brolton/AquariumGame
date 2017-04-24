@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class AquaCondition : SFMonoBehaviour<object> {
-	public bool powerIsOn = true;
-	public bool overload = false;
-	public float currentPower;
-	public float fullPower = 250f;
-	public float waterTemperature = 10f;
-	public float filterPower = 20f;
-	public float oxygenPower = 20f;
-	public float heatPower = 20f;
-	public float lightPower = 20f;
-	public float currentPollution = 0f;
-	public float currentOxygenConsuming;
+	public static bool powerIsOn = true;
+	public static bool overload = false;
+	public static float currentPower;
+	public static float fullPower = 250f;
 
+	public static float currentPollution = 0f;
+	public static float currentOxygenConsuming;
+
+	public static int lightPower = 1;
+	public static int heatPower = 1;
+	public static int filterPower = 1;
+	public static int oxygenPower = 1;
 
 	// Use this for initialization
 	void Start () {

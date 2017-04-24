@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class HeatController : MonoBehaviour {
 	public GameObject mainController;
-	public float heatPower;
+	public int heatPower;
 	public int counter = 1;
 	// Use this for initialization
 	void Start () {
@@ -14,8 +14,8 @@ public class HeatController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (mainController != null) {
-			if (mainController.GetComponent<AquaCondition> ().powerIsOn == false) {
-				heatPower = 0f;
+			if (AquaCondition.powerIsOn == false) {
+				heatPower = 0;
 				switch (counter) {
 				case 5:
 					gameObject.GetComponent<RectTransform> ().localRotation = Quaternion.Euler (new Vector3 (0, 0, -65));
@@ -36,28 +36,28 @@ public class HeatController : MonoBehaviour {
 			} else {
 				switch (counter) {
 				case 5:
-					heatPower = 100f;
+					heatPower = 5;
 					gameObject.GetComponent<RectTransform> ().localRotation = Quaternion.Euler (new Vector3 (0, 0, -65));
 					break;
 				case 4:
-					heatPower = 80f;
+					heatPower = 4;
 					gameObject.GetComponent<RectTransform> ().localRotation = Quaternion.Euler (new Vector3 (0, 0, -35));
 					break;
 				case 3:
-					heatPower = 60f;
+					heatPower = 3;
 					gameObject.GetComponent<RectTransform> ().localRotation = Quaternion.Euler (new Vector3 (0, 0, 0));
 					break;
 				case 2:
-					heatPower = 40f;
+					heatPower = 2;
 					gameObject.GetComponent<RectTransform> ().localRotation = Quaternion.Euler (new Vector3 (0, 0, 35));
 					break;
 				default:
-					heatPower = 20f;
+					heatPower = 1;
 					gameObject.GetComponent<RectTransform> ().localRotation = Quaternion.Euler (new Vector3 (0, 0, 65));
 					break;
 				}
 			}
-			mainController.GetComponent<AquaCondition> ().heatPower = heatPower;
+			AquaCondition.heatPower = heatPower;
 		}
 	}
 	void LateUpdate(){
