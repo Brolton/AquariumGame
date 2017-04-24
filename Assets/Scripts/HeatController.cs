@@ -57,7 +57,7 @@ public class HeatController : MonoBehaviour {
 					break;
 				}
 			}
-			AquaCondition.Instance.heatPower = heatPower;
+			AquaCondition.Instance. HeatPower = heatPower;
 		}
 	}
 	void LateUpdate(){

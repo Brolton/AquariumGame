@@ -156,7 +156,7 @@ public class Fish : SFMonoBehaviour<object> {
 
 		float lightDiscomfort = Mathf.Abs (LightRequired - AquaCondition.Instance.LightPower);
 
-		float tempDiscomfort = Mathf.Abs (TempRequired - AquaCondition.Instance.heatPower);
+		float tempDiscomfort = Mathf.Abs (TempRequired - AquaCondition.Instance. HeatPower);
 
 		float discomfort = Mathf.Max(((lightDiscomfort + tempDiscomfort)  - Constants.DiscomfortIgnoreLevel) * Constants.DiscomfortMul, 0);
 

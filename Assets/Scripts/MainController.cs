@@ -118,8 +118,8 @@ public class MainController : SFMonoBehaviour<object> {
 		_lastFishId++;
 
 		newFish.Name = "Fish: " + _lastFishId.ToString();
-		newFish.LightRequired = UnityEngine.Random.Range(0, Constants.LIGHT_POWER_STEPS_NUMBER);
-		newFish.TempRequired = UnityEngine.Random.Range(0, Constants.TEMP_POWER_STEPS_NUMBER);
+		newFish.LightRequired = UnityEngine.Random.Range(1, Constants.LIGHT_POWER_STEPS_NUMBER);
+		newFish.TempRequired = UnityEngine.Random.Range(1, Constants.TEMP_POWER_STEPS_NUMBER);
 //		newFish.OxygenPerc = UnityEngine.Random.Range(6, 41); // Just for test
 //		newFish.RequiredPurity = UnityEngine.Random.Range(1, 36); // Just for test
 

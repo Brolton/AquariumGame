@@ -16,6 +16,8 @@ public class AquaCondition : SFMonoBehaviour<object> {
 
 	public static AquaCondition Instance = null;
 
+	[SerializeField]
+	public Image _lightLayer;
 	int _lightPower = 0;
 	public int LightPower {
 		get {
@@ -26,13 +28,22 @@ public class AquaCondition : SFMonoBehaviour<object> {
 			UpdateLightLayerAlpha ();
 		}
 	}
+		
+	[SerializeField]
+	public Image _termometer;
+	int _heatPower = 0;
+	public int HeatPower {
+		get {
+			return _heatPower;
+		}
+		set {
+			_heatPower = value;
+			UpdateTermometer ();
+		}
+	}
 
-	public int heatPower = 0;
 	public int filterPower = 0;
 	public int oxygenPower = 0;
-
-	[SerializeField]
-	public Image _lightLayer;
 
 	// Use this for initialization
 	void Start () {
@@ -42,7 +53,7 @@ public class AquaCondition : SFMonoBehaviour<object> {
 	
 	// Update is called once per frame
 	void Update () {
-		currentPower = filterPower + oxygenPower + heatPower + LightPower;
+		currentPower = filterPower + oxygenPower +  HeatPower + LightPower;
 
 		if (currentPower > fullPower) {
 			overload = true;
@@ -54,5 +65,9 @@ public class AquaCondition : SFMonoBehaviour<object> {
 	void UpdateLightLayerAlpha() {
 		float newAlpha = _minLightLayerAlpha * (Constants.LIGHT_POWER_STEPS_NUMBER - 1 - _lightPower) / (Constants.LIGHT_POWER_STEPS_NUMBER - 1);
 		_lightLayer.color = new Color (_lightLayer.color.r, _lightLayer.color.g, _lightLayer.color.b, newAlpha/255.0f);
+	}
+
+	void UpdateTermometer() {
+		_termometer.fillAmount = (float)_heatPower / (float)(Constants.TEMP_POWER_STEPS_NUMBER - 1);
 	}
 }
