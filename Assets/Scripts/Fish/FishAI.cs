@@ -213,6 +213,7 @@ public class FishAI : SFMonoBehaviour<object>
 
 	void EatFood ()
 	{
+		GetComponent<Fish> ().AddHealth(Constants.FOOD_ADDING_HEALTH);
 		_targetFood.OnEated ();
 	}
 }

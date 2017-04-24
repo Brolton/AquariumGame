@@ -22,7 +22,12 @@ public class Fish : SFMonoBehaviour<object> {
 	float _startLifeTime = 0;
 
 	[SerializeField]
-	double _health = 100;
+	float _health = 100;
+	public void AddHealth(float delta) {
+		_health += delta;
+		_health = _health > 100 ? 100 : _health;
+	}
+
 	[SerializeField]
 	double _hunger = 100;
 
