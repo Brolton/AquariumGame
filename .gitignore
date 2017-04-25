@@ -67,3 +67,5 @@ TestBuild.app/Contents/Resources/Data/Managed/UnityEngine.dll
 TestBuild.app/Contents/Resources/Data/Managed/UnityEngine.dll.mdb
 TestBuild.app/Contents/Resources/Data/Managed/UnityEngine.Networking.dll
 TestBuild.app/Contents/Resources/Data/Managed/UnityEngine.PlaymodeTestsRunner.dll
+ProjectSettings/GraphicsSettings.asset
+ProjectSettings/ProjectSettings.asset
