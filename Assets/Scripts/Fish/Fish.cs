@@ -23,6 +23,11 @@ public class Fish : SFMonoBehaviour<object> {
 
 	[SerializeField]
 	float _health = 100;
+	public float Health {
+		get {
+			return _health;
+		}
+	}
 	public void AddHealth(float delta) {
 		_health += delta;
 		_health = _health > 100 ? 100 : _health;
@@ -83,15 +88,21 @@ public class Fish : SFMonoBehaviour<object> {
 		_viewController.Color = newColor;
 	}
 
+	public Color GetColor ()
+	{
+		return _viewController.Color;
+	}
+
 	// Use this for initialization
 	void Start () {
 		_startLifeTime = Time.time;
+		InvokeRepeating("CalculateHealth", 0, Constants.CALCULATE_HEALTH_PERIOD);
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		DecreaseHunger ();
-		CalculateHealth ();
+//		CalculateHealth ();
 		CheckFishAge ();
 	}
 
@@ -148,25 +159,24 @@ public class Fish : SFMonoBehaviour<object> {
 	// Anton's version
 	void CalculateHealth()
 	{
-		int fishLifeTime = (int)(Time.time - _startLifeTime);
-		if (fishLifeTime <= 0 ||
-		    fishLifeTime % 10 != 0) {
-			return;
-		}
+//		int fishLifeTime = (int)(Time.time - _startLifeTime);
+//		if (fishLifeTime <= 0 ||
+//			fishLifeTime % Constants.CALCULATE_HEALTH_PERIOD != 0) {
+//			return;
+//		}
 
-		float lightDiscomfort = Mathf.Abs (LightRequired - AquaCondition.Instance.LightPower);
+		int lightDiscomfort = Mathf.Abs (LightRequired - AquaCondition.Instance.LightPower);
 
-		float tempDiscomfort = Mathf.Abs (TempRequired - AquaCondition.Instance. HeatPower);
+		int tempDiscomfort = Mathf.Abs (TempRequired - AquaCondition.Instance. HeatPower);
 
-		float discomfort = Mathf.Max(((lightDiscomfort + tempDiscomfort)  - Constants.DiscomfortIgnoreLevel) * Constants.DiscomfortMul, 0);
+		float discomfort = ((lightDiscomfort + tempDiscomfort) - Constants.DiscomfortIgnoreLevel) * Constants.DiscomfortMul;
+		discomfort = discomfort > 0 ? discomfort : 0;
 
-		float pollution = Mathf.Max (
-			((MainController.FishPollutionTotal - AquaCondition.Instance.filterPower * Constants.AQUA_MAX_POLLUTION / (Constants.POLL_POWER_STEPS_NUMBER - 1)) * Constants.PollutionMul), 
-			0);
+		float pollution = (MainController.FishPollutionTotal - AquaCondition.Instance.filterPower * Constants.AQUA_MAX_POLLUTION / (Constants.POLL_POWER_STEPS_NUMBER - 1)) * Constants.PollutionMul;
+		pollution = pollution > 0 ? pollution : 0;
 
-		float airDeficit = Mathf.Max (
-			(MainController.FishAirConsumeTotal - AquaCondition.Instance.oxygenPower * Constants.AQUA_MAX_OXYGEN / (Constants.AIR_POWER_STEPS_NUMBER - 1)) * Constants.AirDeficitMul, 
-			0);
+		float airDeficit = (MainController.FishAirConsumeTotal - AquaCondition.Instance.oxygenPower * Constants.AQUA_MAX_OXYGEN / (Constants.AIR_POWER_STEPS_NUMBER - 1)) * Constants.AirDeficitMul;
+		airDeficit = airDeficit > 0 ? airDeficit : 0;
 
 		float fishHealthLoss = discomfort + pollution + airDeficit;
 		_health -= fishHealthLoss;
@@ -192,9 +202,9 @@ public class Fish : SFMonoBehaviour<object> {
 	{
 		float fishLifeTime = Time.time - _startLifeTime;
 
-		if (_currentDay < (int)(fishLifeTime / 60)) // Just for test
+		if (_currentDay < (int)(fishLifeTime / 30)) // Just for test
 		{
-			_currentDay = (int)(fishLifeTime / 60);
+			_currentDay = (int)(fishLifeTime / 30);
 			if (CurrentSize != FishSizes.ADULT) {
 				CurrentSize = (FishSizes)((int)CurrentSize + 1);
 				_viewController.Grow (CurrentSize);
@@ -206,6 +216,13 @@ public class Fish : SFMonoBehaviour<object> {
 
 	void BornNewFish ()
 	{
-		CallEvent ((int)FishEvents.BORN_NEW_FISH, transform.localPosition);
+		CallEvent ((int)FishEvents.BORN_NEW_FISH, this);
+	}
+
+	public void OnMouseDown()
+	{
+		if (_health > 0) {
+			InfoPanel.ShowInfo (this);
+		}
 	}
 }

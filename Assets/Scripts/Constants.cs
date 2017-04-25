@@ -28,10 +28,11 @@ public static class Constants
 //	public const float DiscomfortIgnoreLevel = 2.0f;
 //	public const float PollutionMul = 0.5f;
 //	public const float AirDeficitMul = 0.5f;
-	public const float DiscomfortMul = 0.1f;
-	public const float DiscomfortIgnoreLevel = 2.0f;
-	public const float PollutionMul = 0.05f;
-	public const float AirDeficitMul = 0.05f;
+
+	public const int DiscomfortIgnoreLevel = 1;
+	public const float DiscomfortMul = 1.0f;
+	public const float PollutionMul = 0.5f;
+	public const float AirDeficitMul = 0.5f;
 
 	public const float AQUA_MAX_POLLUTION = 100.0f;
 	public const float FISH_POL_NEWBORN = 2.5f;
@@ -41,4 +42,6 @@ public static class Constants
 	public const float AQUA_MAX_OXYGEN = 100.0f;
 
 	public const float FOOD_ADDING_HEALTH = 3.0f;
+
+	public const int CALCULATE_HEALTH_PERIOD = 1;
 }

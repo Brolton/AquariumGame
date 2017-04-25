@@ -7,7 +7,7 @@ public class AquaCondition : SFMonoBehaviour<object> {
 	public static bool powerIsOn = true;
 	public static bool overload = false;
 	public static float currentPower;
-	public static float fullPower = 13;
+	public static float fullPower = 20;
 
 	public static float currentPollution = 0f;
 	public static float currentOxygenConsuming;
@@ -42,8 +42,8 @@ public class AquaCondition : SFMonoBehaviour<object> {
 		}
 	}
 
-	public int filterPower = 0;
-	public int oxygenPower = 0;
+	public int filterPower = 5;
+	public int oxygenPower = 5;
 
 	// Use this for initialization
 	void Start () {
