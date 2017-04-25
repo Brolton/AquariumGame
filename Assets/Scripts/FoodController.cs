@@ -40,8 +40,7 @@ public class FoodController : SFMonoBehaviour<object> {
 		int horizBound = (int)(_aquarium.GetComponent<RectTransform> ().rect.width / 2);
 
 		float posX = UnityEngine.Random.Range(-horizBound, horizBound);
-		float posY = UnityEngine.Random.Range(_aquarium.GetComponent<RectTransform> ().rect.height / 2,
-			_aquarium.GetComponent<RectTransform> ().rect.height / 2 + 200);
+		float posY = UnityEngine.Random.Range(_aquarium.GetComponent<RectTransform> ().rect.height / 2 - 200, _aquarium.GetComponent<RectTransform> ().rect.height / 2 );
 
 		newFood.transform.SetLocalPositionX (posX);
 		newFood.transform.SetLocalPositionY (posY);

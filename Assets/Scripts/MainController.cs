@@ -58,8 +58,8 @@ public class MainController : SFMonoBehaviour<object> {
 	// Use this for initialization
 	void Start () {
 		startTime = Time.time;
-//		GenerateNewFishes ();
-		CreateNewFish();
+		Fish newFish = CreateNewFish ();
+		newFish.transform.localPosition = new Vector2 ();
 	}
 	
 	// Update is called once per frame
@@ -76,29 +76,29 @@ public class MainController : SFMonoBehaviour<object> {
 	}
 
 	void UpdateScore() {
-		_scoreLbl.text = "Score: " + _scrore.ToString ();
+		_scoreLbl.text = "Fish count: " + _allFishes.Count;
 	}
 
 	void  CheckFishPopulation ()
 	{
 		float gameTime = Time.time - startTime;
 
-		if (currentDay < (int)(gameTime / 15)) // Just for test
+		if (currentDay < (int)(gameTime / 10)) // Just for test
 		{
-			currentDay = (int)(gameTime / 15);
-			GenerateNewFishes ();
+			currentDay = (int)(gameTime / 10);
+			CreateNewFish ();
 		}
 	}
 
 	void GenerateNewFishes ()
 	{
-		int newFishesNumber = 1; //UnityEngine.Random.Range(1, _maxFishesAtOnce + 1);  // Just for test
+		int newFishesNumber = 10; //UnityEngine.Random.Range(1, _maxFishesAtOnce + 1);  // Just for test
 		for (int i = 0; i < newFishesNumber; i++) {
 			CreateNewFish ();
 		}
 	}
 
-	void CreateNewFish ()
+	Fish CreateNewFish ()
 	{
 		Fish newFish = Instantiate (_fishPrefab).GetComponent<Fish>();
 		_allFishes.Add (newFish);
@@ -117,9 +117,9 @@ public class MainController : SFMonoBehaviour<object> {
 
 		_lastFishId++;
 
-		newFish.Name = "Fish: " + _lastFishId.ToString();
-		newFish.LightRequired = UnityEngine.Random.Range(0, Constants.LIGHT_POWER_STEPS_NUMBER);
-		newFish.TempRequired = UnityEngine.Random.Range(0, Constants.TEMP_POWER_STEPS_NUMBER);
+		newFish.Name = "Fish" + _lastFishId.ToString();
+		newFish.LightRequired = UnityEngine.Random.Range(1, Constants.LIGHT_POWER_STEPS_NUMBER);
+		newFish.TempRequired = UnityEngine.Random.Range(1, Constants.TEMP_POWER_STEPS_NUMBER);
 //		newFish.OxygenPerc = UnityEngine.Random.Range(6, 41); // Just for test
 //		newFish.RequiredPurity = UnityEngine.Random.Range(1, 36); // Just for test
 
@@ -127,11 +127,16 @@ public class MainController : SFMonoBehaviour<object> {
 
 		newFish.AddEventListener ((int)Fish.FishEvents.BORN_NEW_FISH, OnBornNewFish);
 		newFish.AddEventListener ((int)Fish.FishEvents.DEATH, OnFishDead);
+		return newFish;
 	}
 
 	void OnBornNewFish(object data) {
-		Vector3 newFishPos = (Vector3)data;
-//		CreateNewFish (newFishPos);
+		Fish parentFish = (Fish)data;
+		Fish newFish = CreateNewFish ();
+		newFish.transform.localPosition = parentFish.transform.localPosition;
+//		newFish.LightRequired = parentFish.LightRequired;
+//		newFish.TempRequired = parentFish.TempRequired;
+		newFish.SetColor (parentFish.GetColor ());
 	}
 
 	void OnFishDead(object data) {

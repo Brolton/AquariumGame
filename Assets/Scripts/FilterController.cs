@@ -57,7 +57,7 @@ public class FilterController : MonoBehaviour {
 					break;
 				}
 			}
-			AquaCondition.filterPower = filterPower;
+			AquaCondition.Instance.filterPower = filterPower;
 		}
 	}
 	void LateUpdate(){
